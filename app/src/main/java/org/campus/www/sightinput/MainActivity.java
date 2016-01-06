@@ -29,7 +29,7 @@ import org.opencv.imgproc.Imgproc;
 public class MainActivity extends Activity implements CvCameraViewListener2 {
     private static final String TAG = "OCVSample::Activity";
     private CameraBridgeViewBase mOpenCvCameraView;
-
+    //GITHUB
     //(Team)입력을 저장할 Mat
     Mat inputMat;
     //(Team)결과를 저장할 Mat
