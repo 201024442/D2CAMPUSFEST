@@ -185,6 +185,7 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
                 Log.d(TAG, "DEBUG--inputed : ("+center.x+", "+center.y+")");
                 app.start_waiting();
                 app.clock_reset();
+                //아래는 버튼 위치 분별 코드. 팀에서 작성.
                 if(center.x>app.button_1_start.x&&center.x<app.button_1_end.x
                         &&center.y>app.button_1_start.y&&center.y<app.button_1_end.y)input_1();
                 else if(center.x>app.button_2_start.x&&center.x<app.button_2_end.x
