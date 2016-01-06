@@ -14,3 +14,5 @@ OpenCV형식의 카메라를 띄우는 기반 예제 http://sourceforge.net/proj
 주황색 물체를 따라가는 OpenCV 예제 http://cell0907.blogspot.kr/2013/08/tracking-ball-in-android-with-opencv.html
 
 카메라 입력시에 발생하는 예외 처리를 위한 핸들러. http://stackoverflow.com/questions/3280141/calledfromwrongthreadexception-only-the-original-thread-that-created-a-view-hie
+
+*브랜치는 현재 Branch가 아니라 Master를 사용하고 있습니다.*
