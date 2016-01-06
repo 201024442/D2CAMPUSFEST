@@ -25,18 +25,17 @@ import org.opencv.imgproc.Imgproc;
 
 
 //전체적인 내용은 OpenCV 3.1.0의 Sample인 tutorial-1-camerapreview를 기준으로.
-//팀에서 직접 작성한 내용이면 (Team)을 붙이고, OpenSource의 경우 특별히 주석을 표기하지 않습니다.
+//http://sourceforge.net/projects/opencvlibrary/files/opencv-android/
 public class MainActivity extends Activity implements CvCameraViewListener2 {
     private static final String TAG = "OCVSample::Activity";
     private CameraBridgeViewBase mOpenCvCameraView;
-    //GITHUB
-    //(Team)입력을 저장할 Mat
+    //입력을 저장할 Mat
     Mat inputMat;
-    //(Team)결과를 저장할 Mat
+    //결과를 저장할 Mat
     Mat outputMat;
-    //(Team)그릴 원의 중심
+    //그릴 원의 중심
     Point circleCenter;
-    //(Team)그릴 원의 색
+    //그릴 원의 색
     Scalar circleColor;
     //RGB식으로 사진을 저장하기 위한 Mat형 변수.
     Mat mRgba;
@@ -136,6 +135,9 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
 
     //매 카메라 프레임마다 작동되는 메소드
     public Mat onCameraFrame(CvCameraViewFrame inputFrame){
+        //오픈 소스를 사용해 물체를 따라가는 알고리즘을 구현
+        //http://cell0907.blogspot.kr/2013/08/tracking-ball-in-android-with-opencv.html
+
         //카메라로 받은 입력을 Mat 변수에 RGB형태로 저장.
         inputMat = inputFrame.rgba();
         mRgba = inputFrame.rgba();
@@ -160,24 +162,19 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
             //Circles는 Mat형 변수이고.
             circles.get(0, 0, data2);
 
-            //Log.d(TAG, "DEBUG--output is " + data2[0] + ", " + data2[1]);
 
             center = new Point(data2[0],data2[1]);
             Imgproc.circle(mRgba,center,25,new Scalar(250,250,250),10);
-            //mRgba = Imgproc.getRotationMatrix2D(center,(double)45,(double)1);
         }//end of if
         //입력을 기다리고 있다가
         if(app.waitingNow()) {
-            //Log.d(TAG, "DEBUG--waiting input...");
             //대기상태에서 입력이 들어오면 트래킹을 시작
             if(circles.rows()!=0){
-                //Log.d(TAG, "DEBUG--detected");
                 app.start_tracking();
             }//end of if
         }//end of if
         //트래킹 도중이다만 입력 도중 취소해도 여기로 돌아옴
         else if(app.trackingNow()&&circles.rows()!=0){
-            //Log.d(TAG, "DEBUG--tracking");
             app.clock_reset();
         }//end of else if
         //도중에 사라지면 입력중
@@ -216,7 +213,6 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
             }//end of if
         }//end of else if
         //입력 완료
-            //Log.d(TAG, "DEBUG--is there a red thing? : "+circles.rows());
 
         //매 프레임마다 버튼을 그려줘야 함.
         app.drawButton(mRgba);
@@ -236,6 +232,10 @@ public class MainActivity extends Activity implements CvCameraViewListener2 {
         super.onStop();
 
     }
+
+    //조건이 갖춰졌을 때에 내용을 입력하는 부분. onCameraFrame에서는 권한 때문에 .setText메소드를 사용할 수 없지만,
+    //Handler를 사용하면 되는 걸 오픈 소스로 배움.
+    //http://stackoverflow.com/questions/3280141/calledfromwrongthreadexception-only-the-original-thread-that-created-a-view-hie
     private void input_1(){
         handler.post(new Runnable(){
             public void run(){
